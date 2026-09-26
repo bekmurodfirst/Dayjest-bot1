@@ -1,0 +1,4 @@
+.env
+laptops.db
+__pycache__/
+*.pyc
