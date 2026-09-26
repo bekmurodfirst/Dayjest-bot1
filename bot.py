@@ -64,6 +64,22 @@ async def cmd_del_admin(message: types.Message, command: CommandObject):
         await message.answer("❌ Bunday ID ga ega admin topilmadi.")
 
 
+# 🚀 Xohlagan vaqtda qo'lda Dayjest chiqarish buyrug'i
+@dp.message(Command("digest"))
+async def cmd_manual_digest(message: types.Message):
+    is_admin = await db.is_user_admin(message.from_user.id, SUPER_ADMIN_ID)
+    if not is_admin:
+        return
+
+    posts = await db.get_today_posts()
+    if not posts:
+        await message.answer("⚠️ Bugun kanalga hali hech qanday e'lon joylanmagan!")
+        return
+
+    await message.answer("⏳ Dayjest tayyorlanib, kanalga yuborilmoqda...")
+    await send_daily_digest()
+    await message.answer("✅ Dayjest muvaffaqiyatli kanalga joylandi!")
+
 # 📋 Adminlar ro'yxatini ko'rish
 @dp.message(Command("admins"))
 async def cmd_list_admins(message: types.Message):
